@@ -1,0 +1,59 @@
+syntax = "proto3";
+
+package todo_service;
+
+option go_package = "learning-go/hyssa-learn/generated/todo_service";
+import "google/api/annotations.proto";
+import "google/api/field_behavior.proto";
+
+
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+
+option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+    info: { title: "API" version: "1.0.0" }
+};
+
+message Todo {
+    int32 id = 1;
+    string title = 2 [(google.api.field_behavior) = REQUIRED];
+    bool completed = 3;
+}
+
+message TodoPk {
+    int32 id = 1;
+}
+
+message GetAllTodosResponse {
+    repeated Todo todos = 1;
+}
+
+message GetAllTodosReq {
+    int32 page = 1;
+    int32 limit = 2;
+}
+
+service TodoService {
+    rpc CreateTodo(Todo) returns (Todo) {
+        option (google.api.http) = {
+            post: "/v1/todo",
+            body: "*"
+        };
+    }
+    rpc GetTodoById(TodoPk) returns (Todo) {
+        option (google.api.http) = {
+            get: "/v1/todo/{id}",
+        };
+    }
+    rpc UpdateTodoById(Todo) returns (Todo) {
+        option (google.api.http) = {
+            patch: "/v1/todo",
+            body: "*"
+        };
+    }
+    rpc GetAllTodos(GetAllTodosReq) returns (GetAllTodosResponse) {
+        option (google.api.http) = {
+            get: "/v1/todos",
+        };
+    }
+}
