@@ -1,8 +1,6 @@
 package wrapper
 
-import (
-	"github.com/grpc-ecosystem/grpc-gateway/runtime"
-)
+import "github.com/grpc-ecosystem/grpc-gateway/runtime"
 
 func CustomMatcher(key string) (string, bool) {
 	switch key {
